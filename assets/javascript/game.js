@@ -16,32 +16,79 @@
     // Variable to hold the index of current word.
     var wordIndex = 0;
 
+    // For Debugging
+    for (var x of words) {
+        console.log(typeof(x));
+    }
+    console.log(typeof(score));
+    console.log(wordIndex);
+    
+
 // FUNCTIONS
 // ==============================================================================
 
     // Function to render words.
     function renderWord() {
+        var placeHolder = words[wordIndex];
+        var wordSlot = [];
+
+        // For Debugging
+        console.log(placeHolder);
+        console.log(wordSlot);
+        console.log(placeHolder[0]);
+
         // If there are still more words, render the next one.
         if (wordIndex <= (words.length - 1)) {
-            var placeHolder = words[wordIndex];
-            var wordSlot = "";
             for (var i =0; i < placeHolder.length; i++) {
-                wordSlot += (placeHolder[i] === " " ? "" : "_ ");
-                // For Debugging
-                console.log(wordSlot);
+                if (placeHolder[i].toLowerCase() === "a" ||
+                placeHolder[i].toLowerCase() === "b" ||
+                placeHolder[i].toLowerCase() === "c" ||
+                placeHolder[i].toLowerCase() === "d" ||
+                placeHolder[i].toLowerCase() === "e" ||
+                placeHolder[i].toLowerCase() === "f" ||
+                placeHolder[i].toLowerCase() === "g" ||
+                placeHolder[i].toLowerCase() === "h" ||
+                placeHolder[i].toLowerCase() === "i" ||
+                placeHolder[i].toLowerCase() === "j" ||
+                placeHolder[i].toLowerCase() === "k" ||
+                placeHolder[i].toLowerCase() === "l" ||
+                placeHolder[i].toLowerCase() === "m" ||
+                placeHolder[i].toLowerCase() === "n" ||
+                placeHolder[i].toLowerCase() === "o" ||
+                placeHolder[i].toLowerCase() === "p" ||
+                placeHolder[i].toLowerCase() === "q" ||
+                placeHolder[i].toLowerCase() === "r" ||
+                placeHolder[i].toLowerCase() === "s" ||
+                placeHolder[i].toLowerCase() === "t" ||
+                placeHolder[i].toLowerCase() === "u" ||
+                placeHolder[i].toLowerCase() === "v" ||
+                placeHolder[i].toLowerCase() === "w" ||
+                placeHolder[i].toLowerCase() === "x" ||
+                placeHolder[i].toLowerCase() === "y" ||
+                placeHolder[i].toLowerCase() === "z") {
+                    wordSlot[i] = "_";
+                    // For Debugging
+                    console.log(wordSlot[i]);
+                }
+                else {
+                    console.log(placeHolder[i]);
+                    console.log(wordSlot[i]);
+                }
+                // document.getElementById("#toBeGuessed").textContent = wordSlot;
             }
-            document.querySelector("#toBeGuessed").innerHTML = wordSlot;
+            
         }
         // If there aren't, render the end game screen.
         else {
-            document.querySelector("#toBeGuessed").innerHTML = "Game Over!";
-            document.querySelector("#points").innerHTML = "Final Score: " + score + " out of " + words.length;
+            document.getElementById("#toBeGuessed").innerHTML = "Game Over!";
+            document.getElementById("#points").innerHTML = "Final Score: " + score + " out of " + words.length;
         }
     }
   
     // Function that updates the score...
     function updateScore() {
-        document.querySelector("#points").innerHTML = score;
+        console.log(score);
+        document.getElementById("#points").innerHTML = score;
     }
 
 
