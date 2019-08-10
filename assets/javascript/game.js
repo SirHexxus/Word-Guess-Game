@@ -3,25 +3,29 @@
 
     // The array of words for our quiz game.
     var words = [
-        "test1",
+        "test one",
         "test two",
         "third test",
         "this is not a test",
         "random bullshit",
         "lorem ipsum"
     ];
-
     // We start the game with a score of 0.
     var score = 0;
     // Variable to hold the index of current word.
     var wordIndex = 0;
+    // Variable to hold the number of lives remaining.
+    var livesLeft = 10;
+    // Empty array to hold letters guessed.
+    var lettersTried = [];
 
     // For Debugging
-    for (var x of words) {
-        console.log(typeof(x));
-    }
-    console.log(typeof(score));
-    console.log(wordIndex);
+    // console.log("words Array");
+    // for (var x of words) {
+    //     console.log(x);
+    // }
+    // console.log("score Variable " + score);
+    // console.log("Index Variable " + wordIndex);
     
 
 // FUNCTIONS
@@ -31,11 +35,14 @@
     function renderWord() {
         var placeHolder = words[wordIndex];
         var wordSlot = [];
+        document.getElementById("toBeGuessed").innerHTML = "";
 
-        // For Debugging
-        console.log(placeHolder);
-        console.log(wordSlot);
-        console.log(placeHolder[0]);
+        // Debugging
+        // console.log("Current Word " + placeHolder);
+        // console.log(" " + wordSlot);
+        // for (var x of placeHolder) {
+        //     console.log(x);
+        // }
 
         // If there are still more words, render the next one.
         if (wordIndex <= (words.length - 1)) {
@@ -66,29 +73,65 @@
                 placeHolder[i].toLowerCase() === "x" ||
                 placeHolder[i].toLowerCase() === "y" ||
                 placeHolder[i].toLowerCase() === "z") {
-                    wordSlot[i] = "_";
-                    // For Debugging
-                    console.log(wordSlot[i]);
+                    wordSlot[i] = "_ ";
+                    // Debugging
+                    // console.log(wordSlot);
                 }
                 else {
-                    console.log(placeHolder[i]);
-                    console.log(wordSlot[i]);
+                    wordSlot[i] = '<span class="space">..</span>';
+                    // Debugging
+                    // console.log(wordSlot);
                 }
-                // document.getElementById("#toBeGuessed").textContent = wordSlot;
+                
+            }
+            for (var j = 0; j < wordSlot.length; j++) {
+                document.getElementById("toBeGuessed").innerHTML += wordSlot[j];
+                // Debugging
+                // console.log(wordSlot);
             }
             
         }
         // If there aren't, render the end game screen.
         else {
-            document.getElementById("#toBeGuessed").innerHTML = "Game Over!";
-            document.getElementById("#points").innerHTML = "Final Score: " + score + " out of " + words.length;
+            document.getElementById("toBeGuessed").innerHTML = "Game Over!";
+            document.getElementById("points").innerHTML = "Final Score: " + score + "!";
         }
     }
   
-    // Function that updates the score...
+    // Function that updates the score.
     function updateScore() {
-        console.log(score);
-        document.getElementById("#points").innerHTML = score;
+        document.getElementById("points").innerHTML = score;
+        // Debugging
+        // console.log(document.getElementById("points").innerHTML);
+    }
+
+    // Function that updates the number of lives remaining.
+    function updateLives() {
+        if (livesLeft <= 0){
+            document.getElementById("lives").innerHTML = 0;
+            wordIndex = words.length;
+            renderWord();
+            // Debugging
+            // console.log(document.getElementById("lives").innerHTML);
+            // console.log(wordIndex);
+        }
+        else {
+            document.getElementById("lives").innerHTML = livesLeft;
+        }
+    }
+
+    // Function that updates the number of lives remaining.
+    function updateTried(letter) {
+        if (lettersTried.includes(letter)){
+            alert("Already tried the letter" + letter + ". Try another one.")
+        }
+        else {
+            
+            document.getElementById("lives").innerHTML = livesLeft;
+            // Debugging
+            // console.log(document.getElementById("lives").innerHTML);
+            // console.log(wordIndex);
+        }
     }
 
 
@@ -98,6 +141,7 @@
     // Calling functions to start the game.
     renderWord();
     updateScore();
+    updateLives();
   
     // When the user presses a key, it will run the following function...
     document.onkeyup = function(event) {
@@ -108,25 +152,27 @@
         }
   
         // Determine which key was pressed, make it lowercase, and set it to the userInput variable.
-        var userInput = event.key.toLowerCase();
+        var userInput = event.key;
+        // Debugging
+        console.log(userInput);
   
-        // Only run this code if "t" or "f" were pressed.
-        if (words[wordIndex].includes(userInput)) {
-            // If they guess the correct answer, increase and update score, alert them they got it right.
-            if (userInput === words[wordIndex]) {
-                alert("Correct!");
-                score++;
-                updateScore();
-            }
-            // If wrong, alert them they are wrong.
-            else {
-                alert("Wrong!");
-            }
+        // If they guess a correct answer, increase and update score, alert them they got it right.
+        if (words[wordIndex].toLowerCase().includes(userInput.toLowerCase())) {
+            alert("Correct!");
+            score++;
+            updateScore();
+        }
+        // If wrong, alert them they are wrong.
+        else {
+            alert("Wrong!");
+            livesLeft--;
+            updateLives();
+        }
   
-        // Increment the questionIndex variable and call the renderQuestion function.
-        questionIndex++;
-        renderQuestion();
-  
+        // If they have the phrase correct, increment the wordIndex variable and call the renderWord function.
+        if (false) {
+            wordIndex++;
+            renderWord();
         }
   
     };
