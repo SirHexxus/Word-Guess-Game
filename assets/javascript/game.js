@@ -16,8 +16,10 @@
     var wordIndex = 0;
     // Variable to hold the number of lives remaining.
     var livesLeft = 10;
-    // Empty array to hold letters guessed.
+    // Empty array to hold wrong letters guessed.
     var lettersTried = [];
+    // Empty array to hold right letters and display.
+    var wordSlot = [];
 
     // For Debugging
     // console.log("words Array");
@@ -34,7 +36,6 @@
     // Function to render words.
     function renderWord() {
         var placeHolder = words[wordIndex];
-        var wordSlot = [];
         document.getElementById("toBeGuessed").innerHTML = "";
 
         // Debugging
@@ -84,18 +85,14 @@
                 }
                 
             }
-            for (var j = 0; j < wordSlot.length; j++) {
-                document.getElementById("toBeGuessed").innerHTML += wordSlot[j];
-                // Debugging
-                // console.log(wordSlot);
-            }
-            
         }
         // If there aren't, render the end game screen.
         else {
             document.getElementById("toBeGuessed").innerHTML = "Game Over!";
             document.getElementById("points").innerHTML = "Final Score: " + score + "!";
         }
+        updateDisplay();
+        checkStatus();
     }
   
     // Function that updates the score.
@@ -120,18 +117,52 @@
         }
     }
 
-    // Function that updates the number of lives remaining.
+    // Function that updates the letters tried.
     function updateTried(letter) {
         if (lettersTried.includes(letter)){
-            alert("Already tried the letter" + letter + ". Try another one.")
+            alert("Already tried the letter " + letter + ". Try another one.");
         }
         else {
-            
-            document.getElementById("lives").innerHTML = livesLeft;
-            // Debugging
-            // console.log(document.getElementById("lives").innerHTML);
-            // console.log(wordIndex);
+            lettersTried.push(letter);
+            document.getElementById("tried").innerHTML = lettersTried;
+            livesLeft--;
+            updateLives();
         }
+        // Debugging
+        // console.log(document.getElementById("tried").innerHTML);
+        // console.log(lettersTried);
+    }
+
+    // Function that updates the letters guessed.
+    function updateGuessed(letter) {
+        for (var x in words[wordIndex]) {
+            if(words[wordIndex][x] === letter); {
+                wordSlot[x] = letter;
+                console.log(words[wordIndex][x]);
+                console.log(wordSlot[x]);
+                // console.log(wordSlot);
+            }
+            else {
+                wordSlot[x] = wordSlot[x];
+            }
+        }
+        updateDisplay();
+        // score++;
+        // updateScore();
+        // Debugging
+        // console.log(document.getElementById("tried").innerHTML);
+        // console.log(lettersTried);
+    }
+
+    function updateDisplay() {
+        document.getElementById("toBeGuessed").innerHTML = wordSlot;
+        // Debugging
+        // console.log(wordSlot);
+    }
+
+    // Function that checks to see if the word is complete
+    function checkStatus() {
+
     }
 
 
@@ -159,14 +190,12 @@
         // If they guess a correct answer, increase and update score, alert them they got it right.
         if (words[wordIndex].toLowerCase().includes(userInput.toLowerCase())) {
             alert("Correct!");
-            score++;
-            updateScore();
+            updateGuessed(userInput);
         }
         // If wrong, alert them they are wrong.
         else {
             alert("Wrong!");
-            livesLeft--;
-            updateLives();
+            updateTried(userInput);
         }
   
         // If they have the phrase correct, increment the wordIndex variable and call the renderWord function.
