@@ -142,9 +142,6 @@
                 console.log(wordSlot[x]);
                 // console.log(wordSlot);
             }
-            else {
-                wordSlot[x] = wordSlot[x];
-            }
         }
         updateDisplay();
         // score++;
